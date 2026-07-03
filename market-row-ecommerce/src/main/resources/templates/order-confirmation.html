@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Order Confirmed - Market Row</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+
+<div th:replace="~{fragments :: header}"></div>
+
+<div class="container">
+    <div class="confirmation-box">
+        <div class="checkmark">&#10003;</div>
+        <h1>Thank you, <span th:text="${order.customerName}">Customer</span>!</h1>
+        <p>Your order has been placed successfully.</p>
+        <div class="order-number">Order #<span th:text="${order.orderNumber}">MR-000000</span></div>
+
+        <table class="cart-table" style="text-align:left;">
+            <tbody>
+                <tr th:each="item : ${order.orderItems}">
+                    <td th:text="${item.productName}">Item</td>
+                    <td th:text="'× ' + ${item.quantity}">x1</td>
+                    <td>₹<span th:text="${#numbers.formatDecimal(item.subtotal, 1, 'COMMA', 2, 'POINT')}">0.00</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="total-row" style="justify-content:center;gap:10px;">
+            <span>Total Paid:</span>
+            <span>₹<span th:text="${#numbers.formatDecimal(order.totalAmount, 1, 'COMMA', 2, 'POINT')}">0.00</span></span>
+        </div>
+
+        <p style="color:#6b7270;font-size:14px;">
+            A confirmation has been recorded for <span th:text="${order.email}">email</span>.
+            Shipping to <span th:text="${order.addressLine} + ', ' + ${order.city} + ', ' + ${order.state} + ' ' + ${order.zipCode}">address</span>.
+        </p>
+
+        <a href="/" class="btn btn-primary">Continue Shopping</a>
+    </div>
+</div>
+
+<div th:replace="~{fragments :: footer}"></div>
+
+</body>
+</html>

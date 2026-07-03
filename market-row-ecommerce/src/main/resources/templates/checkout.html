@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Checkout - Market Row</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+
+<div th:replace="~{fragments :: header}"></div>
+
+<div class="container">
+    <h1 class="section-title">Checkout</h1>
+
+    <div class="checkout-layout">
+        <div>
+            <form th:action="@{/checkout}" th:object="${checkoutForm}" method="post">
+                <div class="form-grid">
+                    <div class="form-group full">
+                        <label for="customerName">Full Name</label>
+                        <input type="text" id="customerName" th:field="*{customerName}" />
+                        <div class="field-error" th:if="${#fields.hasErrors('customerName')}" th:errors="*{customerName}"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" th:field="*{email}" />
+                        <div class="field-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input type="text" id="phone" th:field="*{phone}" />
+                        <div class="field-error" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
+                    </div>
+                    <div class="form-group full">
+                        <label for="addressLine">Address</label>
+                        <input type="text" id="addressLine" th:field="*{addressLine}" />
+                        <div class="field-error" th:if="${#fields.hasErrors('addressLine')}" th:errors="*{addressLine}"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <input type="text" id="city" th:field="*{city}" />
+                        <div class="field-error" th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="state">State</label>
+                        <input type="text" id="state" th:field="*{state}" />
+                        <div class="field-error" th:if="${#fields.hasErrors('state')}" th:errors="*{state}"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="zipCode">ZIP / Postal Code</label>
+                        <input type="text" id="zipCode" th:field="*{zipCode}" />
+                        <div class="field-error" th:if="${#fields.hasErrors('zipCode')}" th:errors="*{zipCode}"></div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-accent btn-block">Place Order</button>
+            </form>
+        </div>
+
+        <div class="order-summary-box">
+            <h3 style="margin-top:0;">Order Summary</h3>
+            <div class="item-row" th:each="entry : ${cart.items}">
+                <span th:text="${entry.value.productName} + ' × ' + ${entry.value.quantity}">Item</span>
+                <span>₹<span th:text="${#numbers.formatDecimal(entry.value.subtotal, 1, 'COMMA', 2, 'POINT')}">0.00</span></span>
+            </div>
+            <div class="total-row">
+                <span>Total</span>
+                <span>₹<span th:text="${#numbers.formatDecimal(cart.total, 1, 'COMMA', 2, 'POINT')}">0.00</span></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments :: footer}"></div>
+
+</body>
+</html>

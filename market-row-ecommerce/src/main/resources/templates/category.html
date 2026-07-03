@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title th:text="${category.name} + ' - Market Row'">Category - Market Row</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+
+<div th:replace="~{fragments :: header}"></div>
+
+<div class="container">
+    <h1 class="section-title" th:text="${category.name}">Category</h1>
+    <p th:text="${category.description}" style="color:#6b7270;margin-top:-10px;">Category description</p>
+
+    <div class="product-grid" th:if="${!products.isEmpty()}">
+        <div class="product-card" th:each="p : ${products}">
+            <a th:href="@{'/product/' + ${p.id}}">
+                <img th:src="${p.imageUrl}" th:alt="${p.name}" />
+            </a>
+            <div class="product-info">
+                <a th:href="@{'/product/' + ${p.id}}" class="product-name" th:text="${p.name}">Product name</a>
+                <div class="price-tag"><span class="currency">₹</span><span th:text="${#numbers.formatDecimal(p.price, 1, 'COMMA', 2, 'POINT')}">0.00</span></div>
+                <span class="stock-badge" th:classappend="${p.inStock} ? 'in' : 'out'"
+                      th:text="${p.inStock} ? 'In Stock' : 'Out of Stock'">In Stock</span>
+                <form th:action="@{/cart/add}" method="post">
+                    <input type="hidden" name="productId" th:value="${p.id}" />
+                    <input type="hidden" name="quantity" value="1" />
+                    <input type="hidden" name="redirectTo" th:value="'/category/' + ${category.slug}" />
+                    <button type="submit" class="btn btn-primary btn-block" th:disabled="${!p.inStock}">Add to Cart</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="empty-state" th:if="${products.isEmpty()}">
+        <p>No products found in this category yet.</p>
+    </div>
+</div>
+
+<div th:replace="~{fragments :: footer}"></div>
+
+</body>
+</html>

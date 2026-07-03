@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<header th:fragment="header" class="site-header">
+    <div class="header-top">
+        <a href="/" class="logo">Market<span>Row</span></a>
+        <form class="search-form" action="/search" method="get">
+            <input type="text" name="q" placeholder="Search for products..." required />
+            <button type="submit">Search</button>
+        </form>
+        <a href="/cart" class="cart-link">
+            🛒 Cart
+            <span class="cart-badge" th:text="${cartItemCount != null ? cartItemCount : 0}">0</span>
+        </a>
+    </div>
+    <nav class="nav-categories" th:if="${categories != null}">
+        <ul>
+            <li th:each="c : ${categories}">
+                <a th:href="@{'/category/' + ${c.slug}}" th:text="${c.name}">Category</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<footer th:fragment="footer" class="site-footer">
+    <p>&copy; 2026 Market Row. Built with Spring Boot &amp; Java 21. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
