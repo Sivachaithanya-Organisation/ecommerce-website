@@ -1,0 +1,34 @@
+pipeline {
+
+    agent any
+
+    environment {
+        APP_NAME = "market-row-ecommerce"
+        USERNAME = "ubuntu"
+        SERVER_IP = credentials('maven-server-ip')
+    }
+
+    stages {
+
+        stage('checkout'){
+            steps{
+                checkout scm
+            }
+        }
+
+        stage('maven build and Deploy'){
+            steps {
+                sh '''
+                    ssh ubuntu@${SERVER_IP} "
+                    sudo rm -rf ecommerce-website
+                    git clone https://github.com/Sivachaithanya-Organisation/ecommerce-website.git
+                    cd ecommerce-website/${APP_NAME}
+                    mvn clean package
+                    sudo cp target/${APP_NAME}.war /opt/tomcat/webapps/
+                    "
+                '''
+            }
+        }
+
+    }
+}
