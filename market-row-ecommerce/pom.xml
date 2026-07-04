@@ -4,10 +4,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <!--
+        Spring Boot 2.7.x is intentionally used here (NOT 3.x). Spring Boot 3.x is built on the
+        Jakarta EE "jakarta.servlet" namespace, which requires Tomcat 10.1+. Spring Boot 2.7.x is
+        the last line built on the older "javax.servlet" namespace, which Tomcat 9 understands.
+        This is what makes a WAR deployable on Tomcat 9 actually work.
+    -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.4</version>
+        <version>2.7.18</version>
         <relativePath/>
     </parent>
 
@@ -15,7 +21,7 @@
     <artifactId>market-row-ecommerce</artifactId>
     <version>1.0.0</version>
     <name>market-row-ecommerce</name>
-    <description>Market Row - Spring Boot E-Commerce Application</description>
+    <description>Market Row - Spring Boot E-Commerce Application (Tomcat 9 / WAR compatible)</description>
     <packaging>war</packaging>
 
     <properties>
@@ -29,9 +35,9 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        <!-- Embedded Tomcat is only needed for local "java -jar" runs.
-             When deployed as a WAR into an external Tomcat, Tomcat itself
-             supplies the servlet container, so this is marked "provided". -->
+        <!-- Provided: Tomcat 9 itself supplies the servlet container when this is
+             deployed as a WAR. This dependency is only needed to compile against
+             servlet APIs, and to run locally via "java -jar" if you ever want to. -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
@@ -56,12 +62,6 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
@@ -73,21 +73,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.springframework.boot</groupId>
-                            <artifactId>spring-boot-devtools</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

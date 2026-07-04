@@ -4,7 +4,7 @@ import com.marketrow.ecommerce.cart.Cart;
 import com.marketrow.ecommerce.dto.CheckoutForm;
 import com.marketrow.ecommerce.model.Order;
 import com.marketrow.ecommerce.service.OrderService;
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
