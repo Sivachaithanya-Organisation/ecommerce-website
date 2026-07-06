@@ -1,4 +1,4 @@
-# Market Row — Spring Boot E-Commerce Application (WAR / Tomcat 9)
+# Market Row — Spring Boot E-Commerce Application ( JAVA 21/ WAR / Tomcat 9)
 
 A full-stack e-commerce site built with **Java 21**, **Spring Boot 2.7.18**, **Spring MVC**,
 **Spring Data JPA**, **Thymeleaf**, and an embedded **H2** file database (no external DB server
